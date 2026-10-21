@@ -55,6 +55,8 @@ export type Settings = {
   /** Agent renames, notes, comments and bookmarks wait for review too, not just patches. */
   readonly reviewAgentEdits: boolean;
   readonly showThinking: boolean;
+  /** 界面语言：简体中文（默认）或英文。 */
+  readonly language: "en" | "zh-CN";
   readonly appearance: Appearance;
   readonly codeFontSize: CodeFontSize;
   readonly codeFont: CodeFont;
@@ -146,6 +148,7 @@ export const DEFAULT_SETTINGS: Settings = {
   readWithoutAsking: true,
   reviewAgentEdits: false,
   showThinking: true,
+  language: "zh-CN",
   appearance: "System",
   codeFontSize: 10,
   codeFont: "JetBrains Mono",
@@ -254,6 +257,7 @@ const SETTINGS: z.ZodType<Settings> = z.object({
   readWithoutAsking: z.boolean().catch(D.readWithoutAsking),
   reviewAgentEdits: z.boolean().catch(D.reviewAgentEdits),
   showThinking: z.boolean().catch(D.showThinking),
+  language: z.enum(["en", "zh-CN"]).catch(D.language),
   appearance: z.enum(["Dark", "Light", "System"]).catch(D.appearance),
   codeFontSize: z.literal(CODE_FONT_SIZES).catch(D.codeFontSize),
   codeFont: z.enum(CODE_FONTS).catch(D.codeFont),
