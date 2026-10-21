@@ -287,6 +287,9 @@ export function buildPages(c: Ctx): Readonly<Record<Page, readonly GroupModel[]>
   const exportDir = s.exportDir || join(homedir(), "Downloads", "Eleven");
   return {
     general: [
+      { label: "Language", rows: [
+        seg("language", "界面语言", "选择简体中文或英文界面，切换后菜单立即生效。", ["zh-CN", "en"], { "zh-CN": "简体中文", "en": "English" }),
+      ] },
       { label: "Startup", rows: [
         sel("launch", "When Eleven opens", "Start on Home, or go straight back to what you had open.", ["Home", "The last project"]),
         tg("restoreLayout", "Reopen tabs and splits", "Bring back the workbench layout of each project when you open it."),

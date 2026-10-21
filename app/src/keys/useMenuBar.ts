@@ -3,6 +3,7 @@ import { useEffect, useRef } from "react";
 import { listProjects, onProjectListChange } from "../engine/project";
 import { isCommandBound, onCommandsChange } from "../lib/shortcuts";
 import type { Desktop } from "../lib/native";
+import { getLocale, setLocale, translateMenu } from "../i18n";
 import { type Settings, useSettings } from "../settings/store";
 import { comboFor } from "./keymaps";
 import { hasMenuAction, onMenuActionsChange } from "./menuActions";
@@ -24,10 +25,12 @@ function contextFor(settings: Settings, withShortcuts: boolean): MenuContext {
 
 /** A shortcut GPUI can't read would reject the whole bar, so that case falls back to a bar without shortcuts. */
 function install(desktop: Desktop, settings: Settings): void {
+  setLocale(settings.language);
+  const locale = getLocale();
   try {
-    desktop.setMenus(menuBar(contextFor(settings, true)));
+    desktop.setMenus(translateMenu(menuBar(contextFor(settings, true)), locale));
   } catch {
-    desktop.setMenus(menuBar(contextFor(settings, false)));
+    desktop.setMenus(translateMenu(menuBar(contextFor(settings, false)), locale));
   }
 }
 

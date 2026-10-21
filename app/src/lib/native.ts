@@ -16,6 +16,9 @@ export type Desktop = Pick<
   | "activateWindow"
 >;
 
+/** Extra window buttons for frameless Windows/Linux builds; test renderers may not carry them. */
+export type WindowButtons = Pick<GpuixRenderer, "minimizeWindow" | "zoomWindow">;
+
 const METHODS = [
   "setMenus",
   "setMenuAction",
@@ -44,4 +47,11 @@ export function adoptDesktop(renderer: unknown): Desktop | null {
 
 export function currentDesktop(): Desktop | null {
   return desktop;
+}
+
+/** The minimize/zoom entry points, when the renderer carries them (Windows/Linux frameless builds). */
+export function windowButtons(renderer: unknown): WindowButtons | null {
+  if (typeof renderer !== "object" || renderer === null) return null;
+  const has = (name: keyof WindowButtons): boolean => typeof Reflect.get(renderer, name) === "function";
+  return has("minimizeWindow") && has("zoomWindow") ? (renderer as WindowButtons) : null;
 }
